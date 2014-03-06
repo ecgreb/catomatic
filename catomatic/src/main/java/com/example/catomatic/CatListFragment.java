@@ -1,13 +1,20 @@
 package com.example.catomatic;
 
+import com.example.catomatic.dummy.DummyContent;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.catomatic.dummy.DummyContent;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A list fragment representing a list of Cats. This fragment
@@ -87,6 +94,28 @@ public class CatListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        testService();
+    }
+
+    private void testService() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://192.168.1.4:3000")
+                .build();
+
+        CatService service = restAdapter.create(CatService.class);
+        service.test(new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getActivity(), "success :)", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Toast.makeText(getActivity(), "failure :(", Toast.LENGTH_SHORT).show();
+                Log.e("catomatic", retrofitError.toString());
+            }
+        });
     }
 
     @Override
