@@ -1,6 +1,10 @@
 package com.example.catomatic;
 
 import com.example.catomatic.dummy.DummyContent;
+import com.example.catomatic.entity.AllegedUser;
+import com.example.catomatic.entity.Profile;
+import com.example.catomatic.network.CatService;
+import com.example.catomatic.network.MockCatService;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,7 +16,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -99,14 +102,17 @@ public class CatListFragment extends ListFragment {
     }
 
     private void testService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://192.168.1.4:3000")
-                .build();
+        //RestAdapter restAdapter = new RestAdapter.Builder()
+        //        .setEndpoint("http://192.168.1.4:3000")
+        //        .build();
+        //
+        //CatService service = restAdapter.create(CatService.class);
 
-        CatService service = restAdapter.create(CatService.class);
-        service.test(new Callback<Response>() {
+        CatService service = new MockCatService();
+        AllegedUser allegedUser = new AllegedUser("ecgreb", "buddy");
+        service.login(allegedUser, new Callback<Profile>() {
             @Override
-            public void success(Response response, Response response2) {
+            public void success(Profile profile, Response response) {
                 Toast.makeText(getActivity(), "success :)", Toast.LENGTH_SHORT).show();
             }
 
