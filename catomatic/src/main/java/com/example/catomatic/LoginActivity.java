@@ -3,7 +3,6 @@ package com.example.catomatic;
 import com.example.catomatic.entity.AllegedUser;
 import com.example.catomatic.entity.Profile;
 import com.example.catomatic.network.CatService;
-import com.example.catomatic.network.MockCatService;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import retrofit.Callback;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -147,20 +147,30 @@ public class LoginActivity extends Activity {
             // perform the user login attempt.
             mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
             showProgress(true);
-            CatService service = new MockCatService();
+
+            RestAdapter restAdapter = new RestAdapter.Builder()
+                    .setEndpoint("http://mostlygeeks.com:5000")
+                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .build();
+
+            CatService service = restAdapter.create(CatService.class);
             AllegedUser allegedUser = new AllegedUser(mEmail, mPassword);
             service.login(allegedUser, new Callback<Profile>() {
                 @Override
                 public void success(Profile profile, Response response) {
+                    Log.d("ecg", profile.toString());
                     Toast.makeText(LoginActivity.this, "success :)", Toast.LENGTH_SHORT).show();
                     showProgress(false);
-                    startActivity(new Intent(LoginActivity.this, CatListActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, CatListActivity.class);
+                    intent.putExtra("access_token", profile.accessToken);
+                    intent.putParcelableArrayListExtra("cats", profile.cats);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void failure(RetrofitError retrofitError) {
                     Toast.makeText(LoginActivity.this, "failure :(", Toast.LENGTH_SHORT).show();
-                    Log.e("catomatic", retrofitError.toString());
+                    Log.e("ecg", retrofitError.toString());
                     showProgress(false);
                 }
             });

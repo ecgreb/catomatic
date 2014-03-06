@@ -1,8 +1,18 @@
 package com.example.catomatic.entity;
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class Profile {
-    public User user;
-    public List<Cat> cats;
+    @SerializedName("access_token") public String accessToken;
+    public ArrayList<Cat> cats;
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "accessToken='" + accessToken + '\'' +
+                ", cats=" + cats +
+                '}';
+    }
 }

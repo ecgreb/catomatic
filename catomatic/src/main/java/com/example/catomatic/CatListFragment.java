@@ -1,13 +1,17 @@
 package com.example.catomatic;
 
 import com.example.catomatic.dummy.DummyContent;
+import com.example.catomatic.entity.Cat;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.List;
 
 /**
  * A list fragment representing a list of Cats. This fragment
@@ -70,6 +74,12 @@ public class CatListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final String accessToken = getActivity().getIntent().getExtras().getString("access_token");
+        final List<Cat> cats = getActivity().getIntent().getExtras().getParcelableArrayList("cats");
+
+        Log.d("ecg", "access token = " + accessToken);
+        Log.d("ecg", "cats = " + cats);
+
         // TODO: replace with a real list adapter.
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
                 getActivity(),
@@ -87,16 +97,6 @@ public class CatListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
-
-        testService();
-    }
-
-    private void testService() {
-        //RestAdapter restAdapter = new RestAdapter.Builder()
-        //        .setEndpoint("http://192.168.1.4:3000")
-        //        .build();
-        //
-        //CatService service = restAdapter.create(CatService.class);
     }
 
     @Override
