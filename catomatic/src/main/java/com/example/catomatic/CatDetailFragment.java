@@ -76,6 +76,8 @@ public class CatDetailFragment extends Fragment {
         CatService catService = restAdapter.create(CatService.class);
         //CatService catService = new MockCatService();
 
+        // TODO: Add authentication token header.
+
         catService.cat(cat.id, new Callback<Cat>() {
             @Override
             public void success(Cat cat, Response response) {
