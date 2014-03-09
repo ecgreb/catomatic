@@ -2,13 +2,20 @@ package com.example.catomatic;
 
 import com.example.catomatic.dummy.DummyContent;
 import com.example.catomatic.entity.Cat;
+import com.example.catomatic.network.CatService;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A fragment representing a single Cat detail screen.
@@ -54,21 +61,6 @@ public class CatDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cat_detail, container, false);
-
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.cat_detail)).setText(mItem.content);
-        }
-
-        return rootView;
-    }
-
-    /***** Principle #2 : Control verbosity ******
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_cat_detail_new, container, false);
 
         if (cat != null) {
@@ -76,11 +68,27 @@ public class CatDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.age)).setText(Integer.toString(cat.ageInMonths));
         }
 
-        // TODO: Request full cat resource and display long description.
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://mostlygeeks.com:5000")
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+
+        CatService catService = restAdapter.create(CatService.class);
+        //CatService catService = new MockCatService();
+
+        catService.cat(cat.id, new Callback<Cat>() {
+            @Override
+            public void success(Cat cat, Response response) {
+                ((TextView) rootView.findViewById(R.id.long_description))
+                        .setText(cat.longDescription);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, error.toString());
+            }
+        });
 
         return rootView;
     }
-
-    ***** Principle #2 : Control verbosity ******/
-
 }
