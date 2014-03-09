@@ -4,7 +4,9 @@ import com.example.catomatic.dummy.DummyContent;
 import com.example.catomatic.entity.Cat;
 import com.example.catomatic.network.CatService;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,9 +78,10 @@ public class CatDetailFragment extends Fragment {
         CatService catService = restAdapter.create(CatService.class);
         //CatService catService = new MockCatService();
 
-        // TODO: Add authentication token header.
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String accessToken = prefs.getString("access_token", null);
 
-        catService.cat(cat.id, new Callback<Cat>() {
+        catService.secureCat(accessToken, cat.id, new Callback<Cat>() {
             @Override
             public void success(Cat cat, Response response) {
                 ((TextView) rootView.findViewById(R.id.long_description))

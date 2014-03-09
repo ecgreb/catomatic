@@ -8,7 +8,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -148,7 +150,7 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Login success: " + profile);
 
-                    //storeAccessToken(profile.accessToken);
+                    storeAccessToken(profile.accessToken);
 
                     showProgress(false);
                     startCatListActivity(profile);
@@ -164,16 +166,12 @@ public class LoginActivity extends Activity {
         }
     }
 
-    /***** Principle #3 : Restrict access *****
-
      private void storeAccessToken(String accessToken) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("access_token", accessToken);
         editor.commit();
     }
-
-     ***** Principle #3 : Restrict access *****/
 
     private void startCatListActivity(Profile profile) {
         final Intent intent = new Intent(this, CatListActivity.class);
