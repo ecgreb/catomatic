@@ -1,6 +1,5 @@
 package com.example.catomatic;
 
-import com.example.catomatic.dummy.DummyContent;
 import com.example.catomatic.entity.Cat;
 
 import android.app.Activity;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -83,12 +81,7 @@ public class CatListFragment extends ListFragment {
             Log.d(TAG, "Cat parcel: " + cats);
         }
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+        setListAdapter(new CatListAdapter(getActivity(), cats));
     }
 
     @Override
@@ -128,7 +121,7 @@ public class CatListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(Long.toString(cats.get(position).id));
     }
 
     @Override

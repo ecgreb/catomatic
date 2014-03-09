@@ -1,6 +1,8 @@
 package com.example.catomatic;
 
+import com.example.catomatic.entity.AllegedUser;
 import com.example.catomatic.entity.Profile;
+import com.example.catomatic.network.CatService;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,12 +10,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -122,8 +131,6 @@ public class LoginActivity extends Activity {
             // perform the user login attempt.
             mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 
-            /***** Principle #1 : Reduce round trips to the server *****
-
             showProgress(true);
 
             RestAdapter restAdapter = new RestAdapter.Builder()
@@ -151,8 +158,6 @@ public class LoginActivity extends Activity {
                     showProgress(false);
                 }
             });
-
-            ***** Principle #1 : Reduce round trips to the server *****/
         }
     }
 
