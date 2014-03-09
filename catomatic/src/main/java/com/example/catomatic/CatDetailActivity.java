@@ -38,6 +38,7 @@ public class CatDetailActivity extends FragmentActivity {
             Bundle arguments = new Bundle();
             arguments.putString(CatDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(CatDetailFragment.ARG_ITEM_ID));
+            arguments.putParcelable("cat", getIntent().getParcelableExtra("cat"));
             CatDetailFragment fragment = new CatDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

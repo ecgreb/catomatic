@@ -10,6 +10,7 @@ import retrofit.Callback;
 import retrofit.client.Header;
 import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.Path;
 import retrofit.mime.TypedString;
 
 public class MockCatService implements CatService {
@@ -20,6 +21,18 @@ public class MockCatService implements CatService {
         cats.add(new Cat(2, "Cat 2", 2, "This is cat 2.", "http://placekitten.com/64/64"));
         cats.add(new Cat(3, "Cat 3", 3, "This is cat 3.", "http://placekitten.com/64/64"));
         callback.success(new Profile(cats), getMockResponse());
+    }
+
+    @Override
+    public void cat(@Path("id") long id, Callback<Cat> callback) {
+        callback.success(new Cat(1,
+                "Cat " + id,
+                (int) id,
+                "This is cat " + id,
+                "http://placekitten.com/64/64",
+                "This is a really long description of cat " + id,
+                "http://placekitten.com/128/128"),
+                getMockResponse());
     }
 
     private Response getMockResponse() {

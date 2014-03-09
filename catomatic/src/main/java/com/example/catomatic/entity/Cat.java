@@ -11,6 +11,8 @@ public class Cat implements Parcelable {
     public int ageInMonths;
     @SerializedName("short_description") public String shortDescription;
     @SerializedName("small_photo_url") public String smallPhotoUrl;
+    @SerializedName("long_description") public String longDescription;
+    @SerializedName("large_photo_url") public String largePhotoUrl;
 
     public Cat(long id, String name, int ageInMonths, String shortDescription,
             String smallPhotoUrl) {
@@ -19,6 +21,17 @@ public class Cat implements Parcelable {
         this.ageInMonths = ageInMonths;
         this.shortDescription = shortDescription;
         this.smallPhotoUrl = smallPhotoUrl;
+    }
+
+    public Cat(long id, String name, int ageInMonths, String shortDescription,
+            String smallPhotoUrl, String longDescription, String largePhotoUrl) {
+        this.id = id;
+        this.name = name;
+        this.ageInMonths = ageInMonths;
+        this.shortDescription = shortDescription;
+        this.smallPhotoUrl = smallPhotoUrl;
+        this.longDescription = longDescription;
+        this.largePhotoUrl = largePhotoUrl;
     }
 
     @Override

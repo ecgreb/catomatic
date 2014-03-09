@@ -1,13 +1,14 @@
 package com.example.catomatic;
 
+import com.example.catomatic.dummy.DummyContent;
+import com.example.catomatic.entity.Cat;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.catomatic.dummy.DummyContent;
 
 /**
  * A fragment representing a single Cat detail screen.
@@ -16,6 +17,8 @@ import com.example.catomatic.dummy.DummyContent;
  * on handsets.
  */
 public class CatDetailFragment extends Fragment {
+    private static final String TAG = CatDetailFragment.class.getSimpleName();
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -26,6 +29,7 @@ public class CatDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private DummyContent.DummyItem mItem;
+    private Cat cat;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,6 +47,7 @@ public class CatDetailFragment extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            cat = getArguments().getParcelable("cat");
         }
     }
 
@@ -58,4 +63,24 @@ public class CatDetailFragment extends Fragment {
 
         return rootView;
     }
+
+    /***** Principle #2 : Control verbosity ******
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_cat_detail_new, container, false);
+
+        if (cat != null) {
+            ((TextView) rootView.findViewById(R.id.name)).setText(cat.name);
+            ((TextView) rootView.findViewById(R.id.age)).setText(Integer.toString(cat.ageInMonths));
+        }
+
+        // TODO: Request full cat resource and display long description.
+
+        return rootView;
+    }
+
+    ***** Principle #2 : Control verbosity ******/
+
 }

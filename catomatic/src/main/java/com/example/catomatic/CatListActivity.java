@@ -1,5 +1,7 @@
 package com.example.catomatic;
 
+import com.example.catomatic.entity.Cat;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -75,6 +77,29 @@ public class CatListActivity extends FragmentActivity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, CatDetailActivity.class);
             detailIntent.putExtra(CatDetailFragment.ARG_ITEM_ID, id);
+            startActivity(detailIntent);
+        }
+    }
+
+    @Override
+    public void onItemSelected(Cat cat) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putParcelable("cat", cat);
+            CatDetailFragment fragment = new CatDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cat_detail_container, fragment)
+                    .commit();
+
+        } else {
+            // In single-pane mode, simply start the detail activity
+            // for the selected item ID.
+            Intent detailIntent = new Intent(this, CatDetailActivity.class);
+            detailIntent.putExtra("cat", cat);
             startActivity(detailIntent);
         }
     }
