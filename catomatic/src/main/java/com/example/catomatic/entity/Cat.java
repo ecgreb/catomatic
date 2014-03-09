@@ -12,7 +12,13 @@ public class Cat implements Parcelable {
     @SerializedName("short_description") public String shortDescription;
     @SerializedName("small_photo_url") public String smallPhotoUrl;
 
-    public Cat() {
+    public Cat(long id, String name, int ageInMonths, String shortDescription,
+            String smallPhotoUrl) {
+        this.id = id;
+        this.name = name;
+        this.ageInMonths = ageInMonths;
+        this.shortDescription = shortDescription;
+        this.smallPhotoUrl = smallPhotoUrl;
     }
 
     @Override

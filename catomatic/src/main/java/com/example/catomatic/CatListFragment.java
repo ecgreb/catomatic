@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * A list fragment representing a list of Cats. This fragment
@@ -23,6 +23,7 @@ import java.util.List;
  * interface.
  */
 public class CatListFragment extends ListFragment {
+    private static final String TAG = CatListFragment.class.getSimpleName();
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -40,6 +41,8 @@ public class CatListFragment extends ListFragment {
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private ArrayList<Cat> cats;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -74,11 +77,11 @@ public class CatListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final String accessToken = getActivity().getIntent().getExtras().getString("access_token");
-        final List<Cat> cats = getActivity().getIntent().getExtras().getParcelableArrayList("cats");
-
-        Log.d("ecg", "access token = " + accessToken);
-        Log.d("ecg", "cats = " + cats);
+        final Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+            cats = extras.getParcelableArrayList("cats");
+            Log.d(TAG, "Cat parcel: " + cats);
+        }
 
         // TODO: replace with a real list adapter.
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
